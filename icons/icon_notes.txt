@@ -1,0 +1,8 @@
+For the fasttrack images:
+- Any image resizing generates artifacts, so edit the 96 image, and just change the canvas size to 50px (where they have a large border)
+Then quick export as PNG
+The iconsize should be about 44px, with a little spacing (3px) above and below (in case there is a shadow)
+Some of the original apps don't have a border, in which case use either the 40 or 48 one, whichever is nearest to 44px. If there is a SVG use that as below.
+
+For other images:
+- Try and get the SVG, resize image to 44px using Photoshop or Photopea, then resize the canvas to 50 px to add some space
