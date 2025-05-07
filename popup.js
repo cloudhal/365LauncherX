@@ -1,5 +1,8 @@
 class IconItem {
     constructor(image, link, text, matchType, alternativeLinks = []) {
+      if (!image || !link || !text || !matchType) {
+        throw new Error("Missing required IconItem parameters");
+    }
       this.image = image;
       this.link = link;
       this.text = text;
@@ -37,7 +40,7 @@ class IconItem {
   ];
 
   // Sort the list of appIcons
-    appIcons.sort((a, b) => a.text.localeCompare(b.text));
+  appIcons.sort((a, b) => a.text.localeCompare(b.text));
 
 // admin icons
 const adminIcons = [
@@ -62,9 +65,18 @@ const adminIcons = [
       // Sort the list of adminIcons
       adminIcons.sort((a, b) => a.text.localeCompare(b.text));
 
-      // Display app or admin icons in the popup
+  // Main DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
+    showAppsPage(); // Show apps page
+    showAdminPage(); // Show admin page
+    togglePages(); // Toggle between apps and admin pages
+    initializeTabMode(); // Initialize tab mode
+  });
+
+function showAppsPage() { // Show apps HTML
     const appsPage = document.getElementById('apps-page');
+    const fragment = document.createDocumentFragment();
+
     appIcons.forEach(icon => {
       const iconHTML = `
       <a href="${icon.link}" target="_blank" class="text-decoration-none">
@@ -72,12 +84,18 @@ const adminIcons = [
           <img src="${icon.image}" alt="${icon.text}" class="img-fluid">
           <p class="text-body">${icon.text}</p>
         </div>
-      </a>
-      `;
-      appsPage.innerHTML += iconHTML;
+      </a>`;
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = iconHTML;
+        fragment.appendChild(tempDiv.firstElementChild);
     });
+    appsPage.appendChild(fragment); // Append all icons at once for better performance
+}
 
+function showAdminPage() { // Show admin HTML
     const adminPage = document.getElementById('admin-page');
+    const fragment = document.createDocumentFragment();
+
     adminIcons.forEach(icon => {
       const iconHTML = `
       <a href="${icon.link}" target="_blank" class="text-decoration-none">
@@ -85,25 +103,72 @@ const adminIcons = [
           <img src="${icon.image}" alt="${icon.text}" class="img-fluid">
           <p class="text-body">${icon.text}</p>
         </div>
-      </a>
-      `;
-      adminPage.innerHTML += iconHTML;
+      </a>`;
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = iconHTML;
+        fragment.appendChild(tempDiv.firstElementChild);
     });
+    adminPage.appendChild(fragment); // Append all icons at once for better performance
+}
 
+function togglePages() { // Toggle button to switch between Apps and Admin pages
+      
+
+      // Get HTML elements for the switch button and pages
+    const switchButton = document.getElementById('switch-btn');
+    const switchLabel = document.querySelector('label[for="switch-btn"]');
+    const appsPage = document.getElementById('apps-page');
+    const adminPage = document.getElementById('admin-page');
+  
+  // Load the switch state from chrome.storage
+  chrome.storage.sync.get(['switchState', "debugMode"], (data) => {
+    const switchState = data.switchState || false; // Default to false if not set
+    switchButton.checked = switchState;
+    debugMode = data.debugMode || false;
+    updatePages(switchState); // Update pages based on state
   });
 
-// Tab behaviour
-document.addEventListener('DOMContentLoaded', () => {
-  const links = document.querySelectorAll('a');
+    // Update pages based on the switch state
+    const updatePages = (isAdmin) => {
+      if (isAdmin) {
+        appsPage.classList.add('hidden');
+        adminPage.classList.remove('hidden');
+        switchLabel.textContent = 'Admin';
+      } else {
+        adminPage.classList.add('hidden');
+        appsPage.classList.remove('hidden');
+        switchLabel.textContent = 'Apps';
+      }
+    };
+  
+    // Save switch state when toggled
+    switchButton.addEventListener('change', () => {
+      const isAdmin = switchButton.checked;
+      chrome.storage.sync.set({ switchState: isAdmin }, () => {
+        logEvent(`Admin switch state: ${isAdmin}`);
+      });
+      updatePages(isAdmin);
+    });
+}
+
+function initializeTabMode() { // Initialize tab mode
+  const links = document.querySelectorAll('a'); 
   const iconItems = [...appIcons, ...adminIcons]; // Combine app and admin icons
 
-  links.forEach(link => {
+  // Load the tab mode from chrome.storage
+  chrome.storage.sync.get(["tabMode"], (data) => {
+    const tabMode = data.tabMode || "individual"; // Default to "individual" if not set
+
+if (tabMode === "individual") {
+    // Individual tab mode: open each link in a new tab
+    links.forEach(link => {
       link.addEventListener('click', (event) => {
           event.preventDefault(); // Prevent default behavior
           const url = new URL(link.href); // Parse the URL from the link
           const baseUrl = `${url.origin}${url.pathname}`; // Extract base URL (domain and path)
           
           // Save the clicked URL in chrome.storage for debugging
+
           chrome.storage.local.set({ ClickedURL: url.href });
           chrome.storage.local.set({ baseUrl: baseUrl });
 
@@ -116,21 +181,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
                   }
               });
-
-
           });
       });
   });
+} else if (tabMode === "single") {
+    // Single tab mode: open all links in the same single tab every time
+    links.forEach(link => {
+      link.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevent default behavior
+          const url = new URL(link.href); // Parse the URL from the link
+          openOrUpdateSingleTab(url.href); // Open or update the single tab
+          // open the url in the same tab
+      });
+  });
+}
+else if (tabMode === "new") {
+  // New tab mode: open all links in a new tab
+  links.forEach(link => {
+    link.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default behavior
+        chrome.tabs.create({ url: link.href }); // Open the link in a new tab
+    });
 });
+}
+});
+}
 
-// Function to open or focus an existing tab
+// function to open or focus in a single tab every time (single tab mode)
+function openOrUpdateSingleTab(url) {
+  chrome.storage.local.get("myTabId", (data) => {
+    const storedTabId = data.myTabId;
+
+    // If we have a stored tabId, check if it's still open
+    if (storedTabId) {
+      chrome.tabs.get(storedTabId, (tab) => {
+        if (chrome.runtime.lastError || !tab) {
+          // Tab doesn't exist (closed), create a new one
+          createNewTab(url);
+        } else {
+          // Tab exists, update it
+          chrome.tabs.update(storedTabId, { url: url }, () => {
+            logEvent(`Updated existing tab: ${storedTabId}`);
+          });
+          // focus the tab
+          chrome.tabs.update(storedTabId, { active: true }, () => {
+            logEvent(`Focused existing tab: ${storedTabId}`);
+          });
+          // Save the tabId again in case it changes (e.g., if the user closes and reopens the tab)
+          chrome.storage.local.set({ myTabId: storedTabId }, () => {
+            logEvent(`Stored tab ID: ${storedTabId}`);
+          });
+          // Save the URL for debugging
+          chrome.storage.local.set({ ClickedURL: url });
+          chrome.storage.local.set({ baseUrl: url }); // Save the base URL for debugging
+          chrome.storage.local.set({ message: "Found matching tab using exact match" });
+          chrome.storage.local.set({ url: url }); // Save the URL for debugging
+        }
+      });
+    } else {
+      // No stored tabId, create a new tab
+      createNewTab(url);
+    }
+  });
+}
+
+// Helper function for openOrUpdateSingleTab to create a new tab and store its ID
+function createNewTab(url) {
+  chrome.tabs.create({ url: url }, (tab) => {
+    chrome.storage.local.set({ myTabId: tab.id });
+    logEvent(`Created new tab with ID: ${tab.id}`);
+  });
+  // focus the tab
+  chrome.tabs.update(tab.id, { active: true }, () => {
+    logEvent(`Focused new tab: ${tab.id}`);
+  });
+}
+
+// Function to open or focus an existing tab using the link and match type
 function openOrFocusTab(url, tabs, item) {
 
   if (item.matchType === 'exact') {
     // Check if the URL matches exactly
     const existingTab = tabs.find(tab => tab.url === url);
     if (existingTab) {
-      chrome.storage.local.set({ message: "Found matching tab using exact match" });
+      logEvent(`Found matching tab using exact match`);
       chrome.tabs.update(existingTab.id, { active: true });
     } else {
       chrome.tabs.create({ url: url });
@@ -140,7 +274,7 @@ function openOrFocusTab(url, tabs, item) {
     // Check if the URL starts with the specified link
     const existingTab = tabs.find(tab => tab.url.startsWith(item.link));
     if (existingTab) {
-      chrome.storage.local.set({ message: "Found matching tab using startsWith" });
+      logEvent(`Found matching tab using startsWith`);
       chrome.tabs.update(existingTab.id, { active: true });
     } else {
       chrome.tabs.create({ url: item.link });
@@ -149,10 +283,10 @@ function openOrFocusTab(url, tabs, item) {
     // Check if the URL matches the pattern
     const existingTab = tabs.find(tab => matchPattern(item.link, tab.url, item.alternativeLinks));
     if (existingTab) {
-      chrome.storage.local.set({ message: "Found matching tab using pattern match" });
+      logEvent(`Found matching tab using pattern match`);
       chrome.tabs.update(existingTab.id, { active: true });
     } else {
-      chrome.storage.local.set({ message: "Didn't find matching tab" });
+      logEvent(`Didn't find matching tab"`);
       chrome.tabs.create({ url: item.link });
     }
   }
@@ -174,75 +308,43 @@ function matchPattern(pattern, url, alternativeLinks = []) {
       let altRegexPattern = alternative
           .replace(/\*/g, '.*') // Allow any subdomain
           .replace(/\//g, '\\/');  // Escape forward slashes
-          chrome.storage.local.set({ url: url }); // Save alternative regex pattern for debugging
-          chrome.storage.local.set({ altRegexPattern: altRegexPattern }); // Save alternative regex pattern for debugging
+          // chrome.storage.local.set({ url: url }); // Save alternative regex pattern for debugging
+          // chrome.storage.local.set({ altRegexPattern: altRegexPattern }); // Save alternative regex pattern for debugging
       // Check if the alternative link matches the URL
       return new RegExp(`^${altRegexPattern}$`).test(url);
   });
 }
 
+  // Debug mode
+  let debugMode;
 
+  // Function to log events based on debug mode setting, uses message as key name if not set
+  function logEvent(message) {
+    if (debugMode) {
+      console.log(message);
+      chrome.storage.local.set({ message: message }); // Save the last message for debugging
+    }
+  }
+  // Override the logEvent function to include chrome storage key name
+  function logEvent(key, message) {
+    if (debugMode) {
+      console.log(message);
+      // Save the last message for debugging using the key
+      chrome.storage.local.set({ [key]: message }); // Save the last message for debugging
+    }
+  }
 
-
-// Toggle button to switch between Apps and Admin pages
+  // About modal
   document.addEventListener('DOMContentLoaded', () => {
-    const switchButton = document.getElementById('switch-btn');
-    const switchLabel = document.querySelector('label[for="switch-btn"]');
-    const appsPage = document.getElementById('apps-page');
-    const adminPage = document.getElementById('admin-page');
-
-    switchButton.addEventListener('click', () => {
-        if (switchButton.checked) {
-          // When the switch is enabled
-          switchLabel.textContent = 'Admin';
-                  // Show Admin page
-        appsPage.classList.add('hidden');
-        adminPage.classList.remove('hidden');
-        } else {
-          // When the switch is disabled
-          switchLabel.textContent = 'Apps';
-                  // Show Apps page
-        appsPage.classList.remove('hidden');
-        adminPage.classList.add('hidden');
-        }
-      });
-  });
-
-  // Save the switch state in chrome.storage
-  document.addEventListener('DOMContentLoaded', () => {
-    const switchButton = document.getElementById('switch-btn');
-    const switchLabel = document.querySelector('label[for="switch-btn"]');
-    const appsPage = document.getElementById('apps-page');
-    const adminPage = document.getElementById('admin-page');
-  
-    // Load the switch state from chrome.storage
-    chrome.storage.sync.get(['switchState'], (result) => {
-      const switchState = result.switchState || false; // Default to false if not set
-      switchButton.checked = switchState;
-      updatePages(switchState); // Update pages based on state
+    const aboutIcon = document.getElementById('about-icon');
+    const aboutModal = new bootstrap.Modal(document.getElementById('about-modal'));
+       // Show about modal on click
+       aboutIcon.addEventListener('click', () => {
+        aboutModal.show();
     });
-  
-    // Update pages based on the switch state
-    const updatePages = (isAdmin) => {
-      if (isAdmin) {
-        appsPage.classList.add('hidden');
-        adminPage.classList.remove('hidden');
-        switchLabel.textContent = 'Admin';
-      } else {
-        adminPage.classList.add('hidden');
-        appsPage.classList.remove('hidden');
-        switchLabel.textContent = 'Apps';
-      }
-    };
-  
-    // Save switch state when toggled
-    switchButton.addEventListener('change', () => {
-      const isAdmin = switchButton.checked;
-      chrome.storage.sync.set({ switchState: isAdmin }, () => {
-        console.log(`Switch state saved: ${isAdmin}`);
-      });
-      updatePages(isAdmin);
-    });
+
+    // Close the modal when the close button is clicked 
+    
   });
 
 // Settings modal
@@ -251,29 +353,39 @@ function matchPattern(pattern, url, alternativeLinks = []) {
     const settingsModal = new bootstrap.Modal(document.getElementById('settings-modal'));
     const saveSettings = document.getElementById('save-settings');
     const themeSelect = document.getElementById('theme');
+    const tabModeSelect = document.getElementById('tab-mode');
     const debugModeToggle = document.getElementById('debug-mode');
 
    // Show settings modal on click
-   settingsIcon.addEventListener('click', () => {
+    settingsIcon.addEventListener('click', () => {
     settingsModal.show();
 });
 
 
     // Save settings to Chrome storage
     saveSettings.addEventListener('click', () => {
-        const theme = themeSelect.value;
-        const debugMode = debugModeToggle.checked;
-
-        chrome.storage.sync.set({ theme, debugMode }, () => {
-            console.log("✅ Settings saved:", { theme, debugMode });
-            settingsModal.style.display = 'none';
+      const tabMode = tabModeSelect.value;  
+      const theme = themeSelect.value;
+      debugMode = debugModeToggle.checked;
+      if (debugMode) {
+          console.log("🛠 Debug mode enabled! Logging events...");
+      }
+      else {
+        console.log("🛠 Debug mode disabled");
+      }
+        chrome.storage.sync.set({ theme, debugMode, tabMode }, () => {
+            console.log("✅ Settings saved:", { theme, debugMode, tabMode });
+            applyTheme(theme); // Apply theme immediately
+            settingsModal.hide(); // Hide the modal after saving
         });
     });
 
-    // Load settings on startup
-    chrome.storage.sync.get(["theme", "debugMode"], (data) => {
+    // Load settings when settings modal is opened
+    chrome.storage.sync.get(["theme", "debugMode", "tabMode"], (data) => {
       applyTheme(data.theme || "system"); // Default to "system" if not set
-        debugModeToggle.checked = data.debugMode || false;
+      themeSelect.value = data.theme || "system"; // Default to "system" if not set
+      tabModeSelect.value = data.tabMode || "individual"; // Default to "individual" if not set
+      debugModeToggle.checked = data.debugMode || false;
     });
 
     function applyTheme(theme) {
@@ -288,16 +400,34 @@ function matchPattern(pattern, url, alternativeLinks = []) {
           // Apply user-selected theme
           document.documentElement.setAttribute('data-bs-theme', theme);
       }
-  
       console.log(`🌗 Applied theme: ${theme}`);
   }
+});
 
-    // Debug Mode: Log events if enabled
-    debugModeToggle.addEventListener('change', () => {
-        chrome.storage.sync.get(["debugMode"], (data) => {
-            if (data.debugMode) {
-                console.log("🛠 Debug mode enabled! Logging events...");
-            }
-        });
-    });
+// Share buttons
+document.querySelectorAll('.share-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const platform = this.getAttribute('data-platform');
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent("Check out 365 Launcher - a great productivity tool!");
+    
+    let shareUrl;
+    switch(platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
+        break;
+      case 'reddit':
+        shareUrl = `https://www.reddit.com/submit?url=${url}&title=${text}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        break;
+    }
+    
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+  });
 });
