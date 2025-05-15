@@ -11,36 +11,37 @@ class IconItem {
     }
   }
 
-  // app icons
-  const appIcons = [
-    new IconItem("icons/Bookings_50x50.png", "https://outlook.office.com/bookings/", "Bookings", "startsWith"),
-    new IconItem("icons/Excel_50x50.png", "https://m365.cloud.microsoft/launch/excel/", "Excel", "startsWith"),
-    new IconItem("icons/Copilot_50x50.png", "https://m365.cloud.microsoft/chat", "Copilot", "pattern", ["https://copilot.cloud.microsoft/*"]),
-    new IconItem("icons/Fabric_50x50.png", "https://app.fabric.microsoft.com/", "Fabric", "startsWith"),
-    new IconItem("icons/Forms_50x50.png", "https://forms.office.com/", "Forms", "startsWith"),
-    new IconItem("icons/Lists_50x50.png", "https://www.office.com/launch/lists/", "Lists", "startsWith"),
-    new IconItem("icons/Microsoft_Teams_50x50.png", "https://aka.ms/mstfw/", "Teams", "startsWith"),
-    new IconItem("icons/Microsoft365_50x50.png", "https://m365.cloud.microsoft/?auth=2", "Office", "exact"),
-    new IconItem("icons/OneDrive_50x50.png", "https://www.office.com/launch/onedrive/", "OneDrive", "pattern", ["https://*-my.sharepoint.com/*"]),
-    new IconItem("icons/OneNote_50x50.png", "https://m365.cloud.microsoft/launch/onenote", "OneNote", "startsWith"),
-    new IconItem("icons/Outlook_50x50.png", "https://outlook.office.com/", "Outlook", "startsWith"),
-    new IconItem("icons/Planner_50x50.png", "https://planner.cloud.microsoft/", "Planner", "startsWith"),
-    new IconItem("icons/Power_Apps_50x50.png", "https://make.powerapps.com/", "Power Apps", "startsWith"),
-    new IconItem("icons/Power_Automate_50x50.png", "https://flow.microsoft.com/", "Power Automate", "startsWith"),
-    new IconItem("icons/Copilot_Studio_50x50.png", "https://copilotstudio.microsoft.com/", "Copilot Studio", "startsWith"),
-    new IconItem("icons/PowerPoint_50x50.png", "https://www.office.com/launch/powerpoint/", "PowerPoint", "startsWith"),
-    new IconItem("icons/Power_BI_50x50.png", "https://app.powerbi.com/", "Power BI", "startsWith"),
-    new IconItem("icons/Project_50x50.png", "https://project.microsoft.com/", "Project", "startsWith"),
-    new IconItem("icons/SharePoint_50x50.png", "https://www.office.com/launch/sharepoint/", "SharePoint", "pattern", ["https://[^.-]+\\.sharepoint\\.com/.*"]),
-    new IconItem("icons/To_Do_50x50.png", "https://to-do.office.com/", "To Do", "startsWith"),
-    new IconItem("icons/Microsoft-Stream_50x50.png", "https://m365.cloud.microsoft/launch/stream", "Stream", "startsWith"),
-    new IconItem("icons/Word_50x50.png", "https://m365.cloud.microsoft/launch/word/", "Word", "startsWith"),
-    new IconItem("icons/Engage_50x50.png", "https://engage.cloud.microsoft/", "Engage", "startsWith"),
-    new IconItem("icons/Loop_50x50.png", "https://loop.cloud.microsoft/", "Loop", "startsWith")
-  ];
+// app icons
+const appIcons = [
+  new IconItem("icons/Bookings_50x50.png", "https://outlook.office.com/bookings/", "Bookings", "startsWith"),
+  new IconItem("icons/Excel_50x50.png", "https://m365.cloud.microsoft/launch/excel/", "Excel", "startsWith"),
+  new IconItem("icons/Copilot_50x50.png", "https://m365.cloud.microsoft/chat", "Copilot", "pattern", ["https://copilot.cloud.microsoft/*"]),
+  new IconItem("icons/Fabric_50x50.png", "https://app.fabric.microsoft.com/", "Fabric", "startsWith"),
+  new IconItem("icons/Forms_50x50.png", "https://forms.office.com/", "Forms", "startsWith"),
+  new IconItem("icons/Lists_50x50.png", "https://www.office.com/launch/lists/", "Lists", "startsWith"),
+  new IconItem("icons/Microsoft_Teams_50x50.png", "https://aka.ms/mstfw/", "Teams", "startsWith"),
+  new IconItem("icons/Microsoft365_50x50.png", "https://m365.cloud.microsoft/?auth=2", "Office", "exact"),
+  new IconItem("icons/OneDrive_50x50.png", "https://www.office.com/launch/onedrive/", "OneDrive", "pattern", ["https://*-my.sharepoint.com/*"]),
+  new IconItem("icons/OneNote_50x50.png", "https://m365.cloud.microsoft/launch/onenote", "OneNote", "startsWith"),
+  new IconItem("icons/Outlook_50x50.png", "https://outlook.office.com/", "Outlook", "startsWith"),
+  new IconItem("icons/Planner_50x50.png", "https://planner.cloud.microsoft/", "Planner", "startsWith"),
+  new IconItem("icons/Power_Apps_50x50.png", "https://make.powerapps.com/", "Power Apps", "startsWith"),
+  new IconItem("icons/Power_Automate_50x50.png", "https://flow.microsoft.com/", "Power Automate", "startsWith"),
+  new IconItem("icons/Copilot_Studio_50x50.png", "https://copilotstudio.microsoft.com/", "Copilot Studio", "startsWith"),
+  new IconItem("icons/PowerPoint_50x50.png", "https://www.office.com/launch/powerpoint/", "PowerPoint", "startsWith"),
+  new IconItem("icons/Power_BI_50x50.png", "https://app.powerbi.com/", "Power BI", "startsWith"),
+  new IconItem("icons/Project_50x50.png", "https://project.microsoft.com/", "Project", "startsWith"),
+  new IconItem("icons/SharePoint_50x50.png", "https://www.office.com/launch/sharepoint/", "SharePoint", "pattern", ["https://[^.-]+\\.sharepoint\\.com/.*"]),
+  new IconItem("icons/To_Do_50x50.png", "https://to-do.office.com/", "To Do", "startsWith"),
+  new IconItem("icons/Microsoft-Stream_50x50.png", "https://m365.cloud.microsoft/launch/stream", "Stream", "startsWith"),
+  new IconItem("icons/Word_50x50.png", "https://m365.cloud.microsoft/launch/word/", "Word", "startsWith"),
+  new IconItem("icons/Engage_50x50.png", "https://engage.cloud.microsoft/", "Engage", "startsWith"),
+  new IconItem("icons/Loop_50x50.png", "https://loop.cloud.microsoft/", "Loop", "startsWith"),
+  new IconItem("icons/Visio_50x50.png", "https://m365.cloud.microsoft/launch/visio", "Visio", "startsWith"),
+  new IconItem("icons/Viva_50x50.png", "https://viva.cloud.microsoft/", "Viva", "startsWith")
+];
 
-  // Sort the list of appIcons
-  appIcons.sort((a, b) => a.text.localeCompare(b.text));
+
 
 // admin icons
 const adminIcons = [
@@ -60,22 +61,43 @@ const adminIcons = [
     new IconItem("icons/AzureDevops_50x50.png", "https://dev.azure.com/", "DevOps", "startsWith"),
     new IconItem("icons/MicrosoftGraph_50x50.png", "https://developer.microsoft.com/en-us/graph/graph-explorer/", "Graph", "startsWith"),
     new IconItem("icons/Office_50x50.png", "https://config.office.com/", "365 Apps", "startsWith"),
-    ];
+];
 
-      // Sort the list of adminIcons
-      adminIcons.sort((a, b) => a.text.localeCompare(b.text));
+// Debug mode
+let debugMode;
 
-  // Main DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    showAppsPage(); // Show apps page
-    showAdminPage(); // Show admin page
-    togglePages(); // Toggle between apps and admin pages
-    initializeTabMode(); // Initialize tab mode
-  });
+// Function to log events based on debug mode setting, uses message as key name if not set
+function logEvent(keyOrMessage, message) {
+  if (debugMode) {
+    if (message === undefined) {
+      // If only one argument is provided, treat it as the message
+      console.log(keyOrMessage);
+      chrome.storage.local.set({ message: keyOrMessage }); // Default key name "message"
+    } else {
+      // If two arguments are provided, use the key
+      console.log(message);
+      chrome.storage.local.set({ [keyOrMessage]: message });
+    }
+  }
+}
+
+// Main DOM Content Load, there should be only one
+document.addEventListener('DOMContentLoaded', () => {
+  showAppsPage(); // Show apps page
+  showAdminPage(); // Show admin page
+  togglePages(); // Toggle between apps and admin pages
+  initializeTabMode(); // Initialize tab mode
+  showAboutModal();
+  showSettingsModal();
+  logEvent("Popup", "Popup script loaded"); // Log event for debugging
+});
 
 function showAppsPage() { // Show apps HTML
     const appsPage = document.getElementById('apps-page');
     const fragment = document.createDocumentFragment();
+
+    // Sort the list of appIcons
+    appIcons.sort((a, b) => a.text.localeCompare(b.text));
 
     appIcons.forEach(icon => {
       const iconHTML = `
@@ -96,6 +118,9 @@ function showAdminPage() { // Show admin HTML
     const adminPage = document.getElementById('admin-page');
     const fragment = document.createDocumentFragment();
 
+    // Sort the list of adminIcons
+    adminIcons.sort((a, b) => a.text.localeCompare(b.text));
+
     adminIcons.forEach(icon => {
       const iconHTML = `
       <a href="${icon.link}" target="_blank" class="text-decoration-none">
@@ -112,9 +137,8 @@ function showAdminPage() { // Show admin HTML
 }
 
 function togglePages() { // Toggle button to switch between Apps and Admin pages
-      
 
-      // Get HTML elements for the switch button and pages
+  // Get HTML elements for the switch button and pages
     const switchButton = document.getElementById('switch-btn');
     const switchLabel = document.querySelector('label[for="switch-btn"]');
     const appsPage = document.getElementById('apps-page');
@@ -169,8 +193,9 @@ if (tabMode === "individual") {
           
           // Save the clicked URL in chrome.storage for debugging
 
-          chrome.storage.local.set({ ClickedURL: url.href });
-          chrome.storage.local.set({ baseUrl: baseUrl });
+          logEvent("ClickedURL", url.href );
+          logEvent("baseUrl", baseUrl);
+          chrome.storage.local.remove("alternativeURL");
 
           chrome.tabs.query({}, (tabs) => {
               // Check if the clicked link matches any icon item
@@ -236,6 +261,7 @@ function openOrUpdateSingleTab(url) {
           chrome.storage.local.set({ baseUrl: url }); // Save the base URL for debugging
           chrome.storage.local.set({ message: "Found matching tab using exact match" });
           chrome.storage.local.set({ url: url }); // Save the URL for debugging
+          chrome.storage.local.remove({ alternativeURL});
         }
       });
     } else {
@@ -304,7 +330,7 @@ function matchPattern(pattern, url, alternativeLinks = []) {
 
   // Check alternative links
   return alternativeLinks.some(alternative => {
-    chrome.storage.local.set({ alternative: alternative }); // Save alternative link for debugging
+    chrome.storage.local.set({ alternativeURL: alternative }); // Save alternative link for debugging
       let altRegexPattern = alternative
           .replace(/\*/g, '.*') // Allow any subdomain
           .replace(/\//g, '\\/');  // Escape forward slashes
@@ -315,40 +341,61 @@ function matchPattern(pattern, url, alternativeLinks = []) {
   });
 }
 
-  // Debug mode
-  let debugMode;
-
-  // Function to log events based on debug mode setting, uses message as key name if not set
-  function logEvent(message) {
-    if (debugMode) {
-      console.log(message);
-      chrome.storage.local.set({ message: message }); // Save the last message for debugging
-    }
-  }
-  // Override the logEvent function to include chrome storage key name
-  function logEvent(key, message) {
-    if (debugMode) {
-      console.log(message);
-      // Save the last message for debugging using the key
-      chrome.storage.local.set({ [key]: message }); // Save the last message for debugging
-    }
-  }
 
   // About modal
-  document.addEventListener('DOMContentLoaded', () => {
-    const aboutIcon = document.getElementById('about-icon');
-    const aboutModal = new bootstrap.Modal(document.getElementById('about-modal'));
-       // Show about modal on click
-       aboutIcon.addEventListener('click', () => {
-        aboutModal.show();
-    });
-
-    // Close the modal when the close button is clicked 
-    
+function showAboutModal() {
+  const aboutIcon = document.getElementById('about-icon');
+  const aboutModal = new bootstrap.Modal(document.getElementById('about-modal'));
+  const logoDark = document.getElementById('logo-dark');
+  const logoLight = document.getElementById('logo-light');
+     // Show about modal on click
+  aboutIcon.addEventListener('click', () => {
+  aboutModal.show();
+  // Check the current theme
+  const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'light';
+  if (currentTheme === 'dark') {
+      logoDark.style.display = 'none';
+      logoLight.style.display = 'block';
+  } else {
+      logoDark.style.display = 'block';
+      logoLight.style.display = 'none';
+  }
   });
+}
+
+
+// Share button actions
+document.querySelectorAll('.share-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const platform = this.getAttribute('data-platform');
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent("Check out 365 Launcher - a great productivity tool!");
+    
+    let shareUrl;
+    switch(platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
+        break;
+      case 'reddit':
+        shareUrl = `https://www.reddit.com/submit?url=${url}&title=${text}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        break;
+    }
+    
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+  });
+});
 
 // Settings modal
-  document.addEventListener('DOMContentLoaded', () => {
+function showSettingsModal() {
+
+
     const settingsIcon = document.getElementById('settings-icon');
     const settingsModal = new bootstrap.Modal(document.getElementById('settings-modal'));
     const saveSettings = document.getElementById('save-settings');
@@ -380,12 +427,23 @@ function matchPattern(pattern, url, alternativeLinks = []) {
         });
     });
 
+    // Add Default Settings: Provide defaults to avoid undefined checks
+    const DEFAULT_SETTINGS = {
+      theme: "system",
+      debugMode: false,
+      tabMode: "individual"
+  };
+  
+  chrome.storage.sync.get(DEFAULT_SETTINGS, (data) => {
+      // data will always have all properties
+  });
+
     // Load settings when settings modal is opened
-    chrome.storage.sync.get(["theme", "debugMode", "tabMode"], (data) => {
-      applyTheme(data.theme || "system"); // Default to "system" if not set
-      themeSelect.value = data.theme || "system"; // Default to "system" if not set
-      tabModeSelect.value = data.tabMode || "individual"; // Default to "individual" if not set
-      debugModeToggle.checked = data.debugMode || false;
+    chrome.storage.sync.get(DEFAULT_SETTINGS, (data) => {
+      themeSelect.value = data.theme;
+      tabModeSelect.value = data.tabMode;
+      debugModeToggle.checked = data.debugMode;
+      applyTheme(data.theme);
     });
 
     function applyTheme(theme) {
@@ -402,32 +460,5 @@ function matchPattern(pattern, url, alternativeLinks = []) {
       }
       console.log(`🌗 Applied theme: ${theme}`);
   }
-});
+};
 
-// Share buttons
-document.querySelectorAll('.share-btn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    const platform = this.getAttribute('data-platform');
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent("Check out 365 Launcher - a great productivity tool!");
-    
-    let shareUrl;
-    switch(platform) {
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-        break;
-      case 'linkedin':
-        shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
-        break;
-      case 'reddit':
-        shareUrl = `https://www.reddit.com/submit?url=${url}&title=${text}`;
-        break;
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-    }
-    
-    window.open(shareUrl, '_blank', 'width=600,height=400');
-  });
-});
