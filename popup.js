@@ -41,8 +41,6 @@ const appIcons = [
   new IconItem("icons/Viva_50x50.png", "https://viva.cloud.microsoft/", "Viva", "startsWith")
 ];
 
-
-
 // admin icons
 const adminIcons = [
     new IconItem("icons/Microsoft365_50x50.png", "https://admin.microsoft.com/", "365 Admin", "startsWith"),
@@ -63,6 +61,31 @@ const adminIcons = [
     new IconItem("icons/Office_50x50.png", "https://config.office.com/", "365 Apps", "startsWith"),
 ];
 
+// Get the version from the manifest file and display it. Note that extension needs to be reloaded if you change the manifest.
+const manifest = chrome.runtime.getManifest();
+console.log("Manifest version:", manifest.version);
+document.getElementById("version").innerText = `Version: ${manifest.version}`;
+fetch(chrome.runtime.getURL("changelog.json"))
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("release-date").innerText = `Released on: ${data.release_date}`;
+    
+    const changesList = document.getElementById("changes-list");
+    data.changes.forEach(change => {
+      const listItem = document.createElement("li");
+            // Add icon based on the type of change
+            if (change.includes("Added")) {
+              listItem.innerHTML = "✨ " + change; // Sparkle for new features
+            } else if (change.includes("Fixed")) {
+              listItem.innerHTML = "🔧 " + change; // Wrench for bug fixes
+            } else if (change.includes("Improved") || change.includes("Optimized")) {
+              listItem.innerHTML = "🚀 " + change; // Rocket for enhancements
+            } else {
+              listItem.innerText = change;
+            }
+      changesList.appendChild(listItem);
+    });
+  });
 // Debug mode
 let debugMode;
 
@@ -101,7 +124,7 @@ function showAppsPage() { // Show apps HTML
 
     appIcons.forEach(icon => {
       const iconHTML = `
-      <a href="${icon.link}" target="_blank" class="text-decoration-none">
+      <a href="${icon.link}" target="_blank" class="text-decoration-none app-icon">
         <div class="icon-item text-center">
           <img src="${icon.image}" alt="${icon.text}" class="img-fluid">
           <p class="text-body">${icon.text}</p>
@@ -125,7 +148,7 @@ function showAdminPage() { // Show admin HTML
       const iconHTML = `
       <a href="${icon.link}" target="_blank" class="text-decoration-none">
         <div class="icon-item text-center">
-          <img src="${icon.image}" alt="${icon.text}" class="img-fluid">
+          <img src="${icon.image}" alt="${icon.text}" class="img-fluid app-icon">
           <p class="text-body">${icon.text}</p>
         </div>
       </a>`;
@@ -176,7 +199,7 @@ function togglePages() { // Toggle button to switch between Apps and Admin pages
 }
 
 function initializeTabMode() { // Initialize tab mode
-  const links = document.querySelectorAll('a'); 
+  const icons = document.querySelectorAll('.app-icon');
   const iconItems = [...appIcons, ...adminIcons]; // Combine app and admin icons
 
   // Load the tab mode from chrome.storage
@@ -185,25 +208,19 @@ function initializeTabMode() { // Initialize tab mode
 
 if (tabMode === "individual") {
     // Individual tab mode: open each link in a new tab
-    links.forEach(link => {
-      link.addEventListener('click', (event) => {
+    icons.forEach(icon => {
+      icon.addEventListener('click', (event) => {
           event.preventDefault(); // Prevent default behavior
-          const url = new URL(link.href); // Parse the URL from the link
-          const baseUrl = `${url.origin}${url.pathname}`; // Extract base URL (domain and path)
-          
-          // Save the clicked URL in chrome.storage for debugging
-
-          logEvent("ClickedURL", url.href );
-          logEvent("baseUrl", baseUrl);
+          logEvent("ClickedURL", icon.href );  // Save the clicked URL in chrome.storage for debugging
           chrome.storage.local.remove("alternativeURL");
-
           chrome.tabs.query({}, (tabs) => {
               // Check if the clicked link matches any icon item
               iconItems.forEach(item => {
-                  if (item.link === link.href) { // found matching icon item
+                  if (item.link === icon.href) { // found matching icon item
                         openOrFocusTab(item.link, tabs, item); // Open or focus the tab
-                  } else  { //no match found, in theory should not happen
-
+                        logEvent("Found matching tab using exact match");
+                  } else  { // no match found, in theory should not happen
+                    logEvent("D2", "No matching icon item found for link: " + icon.href);
                   }
               });
           });
@@ -215,6 +232,8 @@ if (tabMode === "individual") {
       link.addEventListener('click', (event) => {
           event.preventDefault(); // Prevent default behavior
           const url = new URL(link.href); // Parse the URL from the link
+          logEvent("ClickedURL", url.href );  // Save the clicked URL in chrome.storage for debugging
+          chrome.storage.local.remove("alternativeURL");
           openOrUpdateSingleTab(url.href); // Open or update the single tab
           // open the url in the same tab
       });
@@ -222,10 +241,10 @@ if (tabMode === "individual") {
 }
 else if (tabMode === "new") {
   // New tab mode: open all links in a new tab
-  links.forEach(link => {
-    link.addEventListener('click', (event) => {
+  icons.forEach(icon => {
+    icon.addEventListener('click', (event) => {
         event.preventDefault(); // Prevent default behavior
-        chrome.tabs.create({ url: link.href }); // Open the link in a new tab
+        chrome.tabs.create({ url: icon.href }); // Open the link in a new tab
     });
 });
 }
@@ -257,10 +276,10 @@ function openOrUpdateSingleTab(url) {
             logEvent(`Stored tab ID: ${storedTabId}`);
           });
           // Save the URL for debugging
-          chrome.storage.local.set({ ClickedURL: url });
-          chrome.storage.local.set({ baseUrl: url }); // Save the base URL for debugging
-          chrome.storage.local.set({ message: "Found matching tab using exact match" });
-          chrome.storage.local.set({ url: url }); // Save the URL for debugging
+          logEvent("ClickedURL", url.href );  // Save the clicked URL in chrome.storage for debugging
+          chrome.storage.local.remove("alternativeURL");
+          logEvent("Found matching tab using exact match");
+          logEvent("url", url ); 
           chrome.storage.local.remove({ alternativeURL});
         }
       });

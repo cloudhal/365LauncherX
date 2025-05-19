@@ -1,0 +1,9 @@
+{
+    "release_date": "2025-05-15",
+    "changes": [
+      "Added dark mode support",
+      "Improved tab organization",
+      "Fixed a bug causing icons to disappear",
+      "Optimized performance for large tab groups"
+    ]
+  }

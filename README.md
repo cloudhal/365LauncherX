@@ -1,14 +1,15 @@
 # 365 Launcher
 
-**365 Launcher** is a responsive and customizable launcher designed for Microsoft 365 apps and admin portals. This Chrome extension provides quick and easy access to essential tools and resources for managing and using Microsoft 365 efficiently.
+Responsive and customizable launcher designed for Microsoft 365 apps and admin portals, designed to minimise the number of open tabs.
 
 ## Features
 
-- 🌐 **Quick Access**: Access Microsoft 365 apps and admin portals directly from a single launcher.
+- 🧇 **Quick Access**: Access Microsoft 365 apps and admin portals directly from a single launcher.
+- 🌐 **Tab mode**: Minimises the number of open by finding existing open tabs, choose between three tab modes.
 - 🎨 **Customizable**: Toggle between Apps and Admin panels.
 - 🌗 **Dark Mode**: Adapts to the browser's dark mode setting.
 - 📁 **Compact Design**: A responsive grid interface tailored for seamless user experience.
-- 🔒 **Secure**: Settings are saved locally and securely using `chrome.storage`.
+- 🔒 **Secure**: Settings are synced and stored securely using `chrome.storage`.
 
 ## Installation
 
