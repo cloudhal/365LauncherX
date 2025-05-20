@@ -1,27 +1,19 @@
 # 365 Launcher
 
-Responsive and customizable launcher designed for Microsoft 365 apps and admin portals, designed to minimise the number of open tabs.
+A lightweight, compact, launcher for Microsoft 365 apps and admin portals. Features different tab modes to minimise open tabs.
 
 ## Features
 
 - 🧇 **Quick Access**: Access Microsoft 365 apps and admin portals directly from a single launcher.
 - 🌐 **Tab mode**: Minimises the number of open by finding existing open tabs, choose between three tab modes.
-- 🎨 **Customizable**: Toggle between Apps and Admin panels.
+- 🎨 **Customizable**: Toggle between Apps and Admin panels. Suggested to use a different browser profile for admin accounts.
 - 🌗 **Dark Mode**: Adapts to the browser's dark mode setting.
 - 📁 **Compact Design**: A responsive grid interface tailored for seamless user experience.
 - 🔒 **Secure**: Settings are synced and stored securely using `chrome.storage`.
 
 ## Installation
 
-1. Clone or download the repository:
-   ```bash
-   git clone https://github.com/yourusername/365-launcher.git
-   cd 365-launcher
-   ```
-2. Compress the extension files into a `.zip` file if needed.
-3. Open Chrome and go to `chrome://extensions/`.
-4. Enable **Developer mode** (toggle in the top-right corner).
-5. Click **Load unpacked** and select the directory containing the extension files.
+- Install from the Chrome or Edge stores.
 
 ## Usage
 
@@ -67,12 +59,8 @@ If you'd like to contribute or make improvements:
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the Mozilla Public License (MPL).
 
 ## Acknowledgments
 
-Special thanks to the developers of Microsoft 365 for their incredible suite of tools and services.
-
----
-
-Feel free to modify this to fit your project's details and repository structure. Let me know if you'd like additional sections or edits! 🚀
+None.
