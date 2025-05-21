@@ -19,7 +19,7 @@ const appIcons = [
   new IconItem("icons/Fabric_50x50.png", "https://app.fabric.microsoft.com/", "Fabric", "startsWith"),
   new IconItem("icons/Forms_50x50.png", "https://forms.office.com/", "Forms", "startsWith"),
   new IconItem("icons/Lists_50x50.png", "https://www.office.com/launch/lists/", "Lists", "startsWith"),
-  new IconItem("icons/Microsoft_Teams_50x50.png", "https://aka.ms/mstfw/", "Teams", "startsWith"),
+  new IconItem("icons/Microsoft_Teams_50x50.png", "https://teams.microsoft.com/", "Teams", "startsWith"),
   new IconItem("icons/Microsoft365_50x50.png", "https://m365.cloud.microsoft/?auth=2", "Office", "exact"),
   new IconItem("icons/OneDrive_50x50.png", "https://www.office.com/launch/onedrive/", "OneDrive", "pattern", ["https://*-my.sharepoint.com/*"]),
   new IconItem("icons/OneNote_50x50.png", "https://m365.cloud.microsoft/launch/onenote", "OneNote", "startsWith"),
@@ -38,7 +38,10 @@ const appIcons = [
   new IconItem("icons/Engage_50x50.png", "https://engage.cloud.microsoft/", "Engage", "startsWith"),
   new IconItem("icons/Loop_50x50.png", "https://loop.cloud.microsoft/", "Loop", "startsWith"),
   new IconItem("icons/Visio_50x50.png", "https://m365.cloud.microsoft/launch/visio", "Visio", "startsWith"),
-  new IconItem("icons/Viva_50x50.png", "https://viva.cloud.microsoft/", "Viva", "startsWith")
+  new IconItem("icons/Viva_50x50.png", "https://viva.cloud.microsoft/", "Viva", "startsWith"),
+  new IconItem("icons/Designer_50x50.png", "https://designer.microsoft.com/", "Designer", "startsWith"),
+  new IconItem("icons/Clipchamp_50x50.png", "https://www.office.com/launch/clipchamp?auth=2/", "Clipchamp", "startsWith")
+
 ];
 
 // admin icons
@@ -112,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeTabMode(); // Initialize tab mode
   showAboutModal();
   showSettingsModal();
-  logEvent("Popup", "Popup script loaded"); // Log event for debugging
 });
 
 function showAppsPage() { // Show apps HTML
@@ -146,9 +148,9 @@ function showAdminPage() { // Show admin HTML
 
     adminIcons.forEach(icon => {
       const iconHTML = `
-      <a href="${icon.link}" target="_blank" class="text-decoration-none">
+      <a href="${icon.link}" target="_blank" class="text-decoration-none app-icon">
         <div class="icon-item text-center">
-          <img src="${icon.image}" alt="${icon.text}" class="img-fluid app-icon">
+          <img src="${icon.image}" alt="${icon.text}" class="img-fluid">
           <p class="text-body">${icon.text}</p>
         </div>
       </a>`;
@@ -218,9 +220,7 @@ if (tabMode === "individual") {
               iconItems.forEach(item => {
                   if (item.link === icon.href) { // found matching icon item
                         openOrFocusTab(item.link, tabs, item); // Open or focus the tab
-                        logEvent("Found matching tab using exact match");
-                  } else  { // no match found, in theory should not happen
-                    logEvent("D2", "No matching icon item found for link: " + icon.href);
+                        return; // Stop further iterations once a match is found
                   }
               });
           });
@@ -304,7 +304,6 @@ function createNewTab(url) {
 
 // Function to open or focus an existing tab using the link and match type
 function openOrFocusTab(url, tabs, item) {
-
   if (item.matchType === 'exact') {
     // Check if the URL matches exactly
     const existingTab = tabs.find(tab => tab.url === url);
@@ -406,7 +405,6 @@ document.querySelectorAll('.share-btn').forEach(btn => {
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
         break;
     }
-    
     window.open(shareUrl, '_blank', 'width=600,height=400');
   });
 });
