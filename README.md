@@ -24,15 +24,15 @@ A lightweight, compact, launcher for Microsoft 365 apps and admin portals. Featu
 ## Available Shortcuts
 
 ### **Apps**
-- **OneDrive**: [onedrive.office.com](https://onedrive.office.com)
-- **Teams**: [teams.microsoft.com](https://teams.microsoft.com)
-- **Power BI**: [powerbi.com](https://app.powerbi.com)
+- **OneDrive**
+- **Teams**
+- **Power BI**
 - ...and more!
 
 ### **Admin**
-- **365 Admin**: [admin.microsoft.com](https://admin.microsoft.com)
-- **Entra Admin**: [entra.microsoft.com](https://entra.microsoft.com)
-- **Azure Portal**: [portal.azure.com](https://portal.azure.com)
+- **365 Admin**
+- **Entra ID Admin**
+- **Azure Portal**
 - ...and more!
 
 ## Customization

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "365 Launcher",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "A lightweight, responsive and customizable launcher designed for Microsoft 365 apps and admin portals, designed to minimise the number of open tabs.",
     "action": {
       "default_popup": "popup.html",

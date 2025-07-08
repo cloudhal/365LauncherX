@@ -1,3 +1,8 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 class IconItem {
     constructor(image, link, text, matchType, alternativeLinks = []) {
       if (!image || !link || !text || !matchType) {
@@ -166,13 +171,16 @@ function togglePages() { // Toggle button to switch between Apps and Admin pages
   // Get HTML elements for the switch button and pages
     const switchButton = document.getElementById('switch-btn');
     const switchLabel = document.querySelector('label[for="switch-btn"]');
+    const refreshButton = document.getElementById('refresh-btn');
     const appsPage = document.getElementById('apps-page');
     const adminPage = document.getElementById('admin-page');
   
   // Load the switch state from chrome.storage
-  chrome.storage.sync.get(['switchState', "debugMode"], (data) => {
+  chrome.storage.sync.get(["switchState", "debugMode", "refreshState"], (data) => {
     const switchState = data.switchState || false; // Default to false if not set
+    const refreshState = data.refreshState || false; // Default to false if not set
     switchButton.checked = switchState;
+    refreshButton.checked = refreshState; // Set the refresh button state
     debugMode = data.debugMode || false;
     updatePages(switchState); // Update pages based on state
   });
@@ -197,6 +205,14 @@ function togglePages() { // Toggle button to switch between Apps and Admin pages
         logEvent(`Admin switch state: ${isAdmin}`);
       });
       updatePages(isAdmin);
+    });
+
+    // Save refresh switch state when toggled
+    refreshButton.addEventListener('change', () => {
+      const isRefresh = refreshButton.checked;
+      chrome.storage.sync.set({ refreshState: isRefresh }, () => {
+        logEvent(`Refresh switch state: ${isRefresh}`);
+      });
     });
 }
 
@@ -228,14 +244,13 @@ if (tabMode === "individual") {
   });
 } else if (tabMode === "single") {
     // Single tab mode: open all links in the same single tab every time
-    links.forEach(link => {
-      link.addEventListener('click', (event) => {
+    icons.forEach(icon => {
+      icon.addEventListener('click', (event) => {
           event.preventDefault(); // Prevent default behavior
-          const url = new URL(link.href); // Parse the URL from the link
+          const url = new URL(icon.href); // Parse the URL from the link
           logEvent("ClickedURL", url.href );  // Save the clicked URL in chrome.storage for debugging
           chrome.storage.local.remove("alternativeURL");
           openOrUpdateSingleTab(url.href); // Open or update the single tab
-          // open the url in the same tab
       });
   });
 }
@@ -255,7 +270,6 @@ else if (tabMode === "new") {
 function openOrUpdateSingleTab(url) {
   chrome.storage.local.get("myTabId", (data) => {
     const storedTabId = data.myTabId;
-
     // If we have a stored tabId, check if it's still open
     if (storedTabId) {
       chrome.tabs.get(storedTabId, (tab) => {
@@ -263,7 +277,7 @@ function openOrUpdateSingleTab(url) {
           // Tab doesn't exist (closed), create a new one
           createNewTab(url);
         } else {
-          // Tab exists, update it
+          // Tab exists, update it. We could check if it matches the URL in which case we don't need to update it.
           chrome.tabs.update(storedTabId, { url: url }, () => {
             logEvent(`Updated existing tab: ${storedTabId}`);
           });
@@ -276,7 +290,6 @@ function openOrUpdateSingleTab(url) {
             logEvent(`Stored tab ID: ${storedTabId}`);
           });
           // Save the URL for debugging
-          logEvent("ClickedURL", url.href );  // Save the clicked URL in chrome.storage for debugging
           chrome.storage.local.remove("alternativeURL");
           logEvent("Found matching tab using exact match");
           logEvent("url", url ); 
@@ -310,6 +323,13 @@ function openOrFocusTab(url, tabs, item) {
     if (existingTab) {
       logEvent(`Found matching tab using exact match`);
       chrome.tabs.update(existingTab.id, { active: true });
+      // if isRefresh is true, refresh the tab
+      if (document.getElementById('refresh-btn').checked) {
+          chrome.tabs.reload(existingTab.id, () => {
+              logEvent(`Refreshed tab for link: ${item.link}`);
+          });
+          logEvent(`Refreshed tab for link: ${item.link}`);
+      }
     } else {
       chrome.tabs.create({ url: url });
     }
@@ -320,6 +340,13 @@ function openOrFocusTab(url, tabs, item) {
     if (existingTab) {
       logEvent(`Found matching tab using startsWith`);
       chrome.tabs.update(existingTab.id, { active: true });
+            // if isRefresh is true, refresh the tab
+      if (document.getElementById('refresh-btn').checked) {
+          chrome.tabs.reload(existingTab.id, () => {
+              logEvent(`Refreshed tab for link: ${item.link}`);
+          });
+          logEvent(`Refreshed tab for link: ${item.link}`);
+      }
     } else {
       chrome.tabs.create({ url: item.link });
     }
@@ -329,6 +356,13 @@ function openOrFocusTab(url, tabs, item) {
     if (existingTab) {
       logEvent(`Found matching tab using pattern match`);
       chrome.tabs.update(existingTab.id, { active: true });
+            // if isRefresh is true, refresh the tab
+      if (document.getElementById('refresh-btn').checked) {
+          chrome.tabs.reload(existingTab.id, () => {
+              logEvent(`Refreshed tab for link: ${item.link}`);
+          });
+          logEvent(`Refreshed tab for link: ${item.link}`);
+      }
     } else {
       logEvent(`Didn't find matching tab"`);
       chrome.tabs.create({ url: item.link });

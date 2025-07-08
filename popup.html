@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+   <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
@@ -12,45 +15,55 @@
       color: var(--bs-body-color);
     }
     .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-    gap: 0px;
-    padding: 0px 10px 10px 10px;;
-    width: 340px; /* Set an appropriate width */
-    height: auto; /* Allow the grid to grow dynamically */
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+      gap: 0px;
+      padding: 0px 10px 10px 10px;;
+      width: 340px; /* Set an appropriate width */
+      height: auto; /* Allow the grid to grow dynamically */
     }
     .icon-item {
-    border: 1px solid transparent;     /* add a transparent 1px border so it doesn't move around */
-    text-align: center;
-    padding: 10px 10px 0px 10px; /* Add some padding around the icon */
-    height: 93px; /* Set a fixed height for the icon item, otherwise 2 line labels through make the row too high */
+      border: 1px solid transparent;     /* add a transparent 1px border so it doesn't move around */
+      text-align: center;
+      padding: 10px 10px 0px 10px; /* Add some padding around the icon */
+      height: 93px; /* Set a fixed height for the icon item, otherwise 2 line labels through make the row too high */
     }
     .icon-item:hover {
       border: 1px solid var(--bs-border-color); /* Subtle border */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Light drop shadow */
-    border-radius: 5px; /* Optional rounded corners */
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Light drop shadow */
+      border-radius: 5px; /* Optional rounded corners */
     }
     .icon-item img {
       max-width: 35px;
       height: auto;
     }
     .hidden {
-        display: none;
-        visibility: hidden;
+      display: none;
+      visibility: hidden;
     }
     .icon-item p {
-  font-weight: 450; /* Make text slightly bold */
-  font-size: smaller;
-    margin-top: 5px; /* Add some space between the icon and text */
-}
+      font-weight: 450; /* Make text slightly bold */
+      font-size: smaller;
+      margin-top: 5px; /* Add some space between the icon and text */
+    }
+    ul { /* remove bullets from changelog list */
+      list-style-type: none;
+      padding: 0;
+    }
   </style>
 </head>
 <body>
-
+<!-- make these 2 buttons on the same line-->
+<div class="d-flex align-items-center" style="padding: 10px;">
   <div class="form-check form-switch" style="margin: 10px; text-align: left;">
     <input class="form-check-input" type="checkbox" role="switch" id="switch-btn">
     <label class="form-check-label" for="switch-btn">Apps</label>
   </div>
+    <div class="form-check form-switch" style="margin: 10px; text-align: left;">
+    <input class="form-check-input" type="checkbox" role="switch" id="refresh-btn">
+    <label class="form-check-label" for="refresh-btn">Refresh</label>
+  </div>
+</div>
 
   <!-- About icon -->
 <div id="about-icon" style="position: absolute; top: 10px; right: 40px; cursor: pointer;">
@@ -126,6 +139,7 @@
           <h6 class="fw-bold">Version Information</h6>
           <p id="version"></p>
           <p id = "release-date"></p>
+          <p>Released under the <a href="https://mozilla.org/MPL/2.0/" target="_blank">Mozilla Public License Version 2.0</a></p>
           <ul id="changes-list"></ul>
           <!-- GitHub button -->
           <a href="https://github.com/cloudhal/365LauncherX" class="btn btn-outline-primary" target="_blank" >
