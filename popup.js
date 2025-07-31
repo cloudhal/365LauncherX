@@ -51,7 +51,7 @@ const appIcons = [
 
 // admin icons
 const adminIcons = [
-    new IconItem("icons/Microsoft365_50x50.png", "https://admin.microsoft.com/", "365 Admin", "startsWith"),
+    new IconItem("icons/Microsoft365_50x50.png", "https://admin.cloud.microsoft/", "365 Admin", "startsWith"),
     new IconItem("icons/EntraID_50x50.png", "https://entra.microsoft.com/", "Entra", "startsWith"),
     new IconItem("icons/Azure_50x50.png", "https://portal.azure.com/", "Azure", "startsWith"),
     new IconItem("icons/Purview_50x50.png", "https://purview.microsoft.com/", "Purview", "startsWith"),

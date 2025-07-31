@@ -1,4 +1,4 @@
-# 365 Launcher
+# 365 Launcher X
 
 A lightweight, compact, launcher for Microsoft 365 apps and admin portals. Features different tab modes to minimise open tabs.
 
