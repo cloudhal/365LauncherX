@@ -88,6 +88,8 @@ fetch(chrome.runtime.getURL("changelog.json"))
               listItem.innerHTML = "🔧 " + change; // Wrench for bug fixes
             } else if (change.includes("Improved") || change.includes("Optimized")) {
               listItem.innerHTML = "🚀 " + change; // Rocket for enhancements
+            } else if (change.includes("Updated")) {
+              listItem.innerHTML = "🔄 " + change; // Counterclockwise arrows for updates
             } else {
               listItem.innerText = change;
             }

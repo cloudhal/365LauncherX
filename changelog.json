@@ -1,7 +1,7 @@
 {
-    "release_date": "2025-05-15",
+    "release_date": "2025-10-16",
     "changes": [
-      "Added Refresh button to reload tabs",
-      "Added dark mode support"
+      "Updated Bootstrap to version 5.3.8",
+      "Added Refresh button to reload tabs"
     ]
   }
