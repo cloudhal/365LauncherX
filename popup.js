@@ -20,7 +20,7 @@ class IconItem {
 const appIcons = [
   new IconItem("icons/Bookings_50x50.png", "https://outlook.office.com/bookings/", "Bookings", "startsWith"),
   new IconItem("icons/Excel_50x50.png", "https://m365.cloud.microsoft/launch/excel/", "Excel", "startsWith"),
-  new IconItem("icons/Copilot_50x50.png", "https://m365.cloud.microsoft/chat", "Copilot", "pattern", ["https://copilot.cloud.microsoft/*"]),
+  new IconItem("icons/Copilot_50x50.png", "https://m365.cloud.microsoft/chat", "Copilot", "pattern", ["https://copilot.cloud.microsoft/*","https://m365.cloud.microsoft/chat*"]),
   new IconItem("icons/Fabric_50x50.png", "https://app.fabric.microsoft.com/", "Fabric", "startsWith"),
   new IconItem("icons/Forms_50x50.png", "https://forms.office.com/", "Forms", "startsWith"),
   new IconItem("icons/Lists_50x50.png", "https://www.office.com/launch/lists/", "Lists", "startsWith"),
