@@ -1,8 +1,8 @@
 {
-    "release_date": "2025-11-12",
+    "release_date": "2025-11-14",
     "changes": [
       "Updated Bootstrap to version 5.3.8",
       "Added Refresh button to reload tabs",
-      "Published release version v1.0.0"
+      "Updated app icon"
     ]
   }
